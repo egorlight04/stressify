@@ -6,11 +6,12 @@ class Client():
         self.token = token
         self.server = "https://api.telegram.org/"
 
-    def request(self, method, parameters = {}):
-        response = requests.post(self.server + "bot" + self.token + "/" + method, parameters)
+    def request(self, method, parameters={}):
+        response = requests.post(
+            self.server + "bot" + self.token + "/" + method, parameters)
         return response.json()
 
-    def listen(self, handle, parameters = {}):
+    def listen(self, handle, parameters={}):
         while True:
             try:
                 updates = self.request("getUpdates", parameters)
@@ -21,3 +22,17 @@ class Client():
             except:
                 print("Unexpected interruption. Forced exit...")
                 break
+
+    def handle(self, updates):
+        print(updates)
+        try:
+            response = self.request("sendMessage", {
+                "chat_id": updates["result"][0]["message"]["chat"]["id"],
+                "text": updates["result"][0]["message"]["text"],
+            })
+        except:
+            print("Unexpected interruption. Forced exit...")
+        return response
+
+    def log(self):
+        pass

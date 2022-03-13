@@ -1,2 +1,2 @@
-def start():
-    print("Hello!")
+def start(parameters):
+    pass
